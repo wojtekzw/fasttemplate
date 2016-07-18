@@ -187,6 +187,57 @@ func TestMixedValues(t *testing.T) {
 	}
 }
 
+func TestTagList(t *testing.T) {
+	template := "foobar[foo][baz][bar]"
+	testTags := []string{"foo", "baz", "bar"}
+	tpl := New(template, "[", "]")
+
+	tags := tpl.Tags()
+
+	if !testEqStringSlice(testTags, tags) {
+		t.Fatalf("Expected: %v, got: %v", testTags, tags)
+	}
+}
+
+func TestEmptyTagList(t *testing.T) {
+	template := "foobar"
+	testTags := []string{}
+	tpl := New(template, "[", "]")
+
+	tags := tpl.Tags()
+
+	if !testEqStringSlice(testTags, tags) {
+		t.Fatalf("Expected: %v, got: %v", testTags, tags)
+	}
+}
+
+func testEqStringSlice(a, b []string) bool {
+
+	if a == nil && b == nil {
+		return true
+	}
+
+	if len(a) == 0 && len(b) == 0 {
+		return true
+	}
+
+	if a == nil || b == nil {
+		return false
+	}
+
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func expectPanic(t *testing.T, f func()) {
 	defer func() {
 		if r := recover(); r == nil {

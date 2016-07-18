@@ -173,3 +173,8 @@ func stdTagFunc(w io.Writer, tag string, m map[string]interface{}) (int, error) 
 		panic(fmt.Sprintf("tag=%q contains unexpected value type=%#v. Expected []byte, string or TagFunc", tag, v))
 	}
 }
+
+// Tags - tag names present in the template
+func (t *Template) Tags() []string {
+	return t.tags
+}
